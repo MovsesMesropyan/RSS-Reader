@@ -28,9 +28,11 @@ class Rss extends Component {
             <div className="container marginTop70">
                 {rss ?
                     <div className="row">
+                        {rss.enclosures&&rss.enclosures[0]&&rss.enclosures[0].url ?
                         <div className="col-lg-3 col-md-3 col-sm-4 col-xs-12">
                             <img src={rss.enclosures[0].url} className="img-responsive" />
-                        </div>
+                        </div> :
+                        null}
                         <div className="col-lg-9 col-md-9 col-sm-8 col-xs-12">
                             <h1 className="marginTop0">{rss.title}</h1>
                             <p>{rss.description}</p>
