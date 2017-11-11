@@ -1,0 +1,24 @@
+a {
+    cursor: pointer;
+}
+.marginTop0 {
+    margin-top: 0;
+}
+.marginTop20 {
+    margin-top: 20px;
+}
+.marginTop70 {
+    margin-top: 70px;
+}
+.floatLeft {
+    float: left;
+}
+.center {
+    text-align: center;
+}
+.alertWrapper {
+    position: fixed;
+    right: 0;
+    top: 60px;
+    width: 320px;
+}
