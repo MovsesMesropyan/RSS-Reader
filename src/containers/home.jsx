@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+
+import RssItem from './../components/rssItem';
+import Spinner from './../components/spinner';
 
 import * as  HomeActions from '../actions/home';
 import utils from '../services/utils';
-import Spinner from './../components/spinner';
 
 class Home extends Component{
     constructor(props) {
@@ -35,6 +36,17 @@ class Home extends Component{
         const { isLoading } = this.props.main;
         const { reviewedRss } = this.state;
 
+        let tableBody = (rssList.length > 0) ? rssList.map((rss, i) => {
+            return  <RssItem
+                        key={rss.url}
+                        rss={rss}
+                        reviewedRss={reviewedRss}
+                        number={i+1}
+                        redirectTo={() => this.redirectTo(rss)}/>}) :
+                    <tr>
+                        <td colSpan="6"><p className="center">List is empty</p></td>
+                    </tr>;
+
         return (
             <div className="container marginTop70">
                 <div className="row">
@@ -55,38 +67,14 @@ class Home extends Component{
                             </tr>
                         </thead>
                         <tbody>
-                        {(rssList.length > 0) ? rssList.map((rss, i) =>
-                            <tr key={rss.url}>
-                                <td>{i+1}</td>
-                                <td>
-                                    {rss.enclosures&&rss.enclosures[0]&&rss.enclosures[0].url ?
-                                    <Link to={rss.url.split('lenta.ru')[1]} onClick={() => { this.redirectTo(rss)}} target="_blank">
-                                        <img style={imgStyle} src={rss.enclosures[0].url} className="img-responsive" />
-                                    </Link> :
-                                    null}
-                                </td>
-                                <td>{rss.title}</td>
-                                <td>{utils.processDate(rss.created, 'DD.MM.YYYY HH:mm')}</td>
-                                <td>{reviewedRss[rss.url.split('lenta.ru')[1]] ? 'Viewed' : 'New'}</td>
-                                <td>
-                                    <Link to={rss.url.split('lenta.ru')[1]} onClick={() => { this.redirectTo(rss)}} target="_blank">More...</Link>
-                                </td>
-                            </tr>
-                        ) :
-                            <tr>
-                                <td colSpan="6"><p className="center">List is empty</p></td>
-                            </tr>}
+                        {tableBody}
                         </tbody>
                     </table>}
                 </div>
             </div>
-        )
+        );
     }
 }
-
-const imgStyle = {
-    maxWidth: '100px'
-};
 
 const mapStateToProps = ({ main, home }) => {
     return {main, home};
